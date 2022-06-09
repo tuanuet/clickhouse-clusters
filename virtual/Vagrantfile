@@ -1,0 +1,100 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Tạo máy ảo từ box centos/7, gán địa chỉ IP, đặt hostname, gán 2GB bộ nhớ, 2 cpus  
+Vagrant.configure("2") do |config|
+    config.vm.define "blue1" do |blue1|
+        blue1.vm.box = "centos/7"
+        blue1.vm.network "private_network", ip: "192.168.56.10"
+        blue1.vm.hostname = "blue1.xtl"
+    
+        blue1.vm.provider "virtualbox" do |vb|
+            vb.name = "blue1.xtl"
+            vb.cpus = 1
+            vb.memory = "512"
+        end
+    end
+
+    config.vm.define "green1" do |green1|
+        green1.vm.box = "centos/7"
+        green1.vm.network "private_network", ip: "192.168.56.12"
+        green1.vm.hostname = "green1.xtl"
+    
+        green1.vm.provider "virtualbox" do |vb|
+            vb.name = "green1.xtl"
+            vb.cpus = 1
+            vb.memory = "512"
+        end
+    end
+
+    config.vm.define "orange1" do |orange1|
+        orange1.vm.box = "centos/7"
+        orange1.vm.network "private_network", ip: "192.168.56.14"
+        orange1.vm.hostname = "orange1.xtl"
+    
+        orange1.vm.provider "virtualbox" do |vb|
+            vb.name = "orange1.xtl"
+            vb.cpus = 1
+            vb.memory = "512"
+        end
+    end
+
+
+    ## replicas
+    config.vm.define "blue2" do |blue2|
+        blue2.vm.box = "centos/7"
+        blue2.vm.network "private_network", ip: "192.168.56.11"
+        blue2.vm.hostname = "blue2.xtl"
+    
+        blue2.vm.provider "virtualbox" do |vb|
+            vb.name = "blue2.xtl"
+            vb.cpus = 1
+            vb.memory = "512"
+        end
+    end
+
+    # config.vm.define "green2" do |green2|
+    #     green2.vm.box = "centos/7"
+    #     green2.vm.network "private_network", ip: "192.168.56.13"
+    #     green2.vm.hostname = "green2.xtl"
+    
+    #     green2.vm.provider "virtualbox" do |vb|
+    #         vb.name = "green2.xtl"
+    #         vb.cpus = 1
+    #         vb.memory = "512"
+    #     end
+    # end
+
+    # config.vm.define "orange2" do |orange2|
+    #     orange2.vm.box = "centos/7"
+    #     orange2.vm.network "private_network", ip: "192.168.56.15"
+    #     orange2.vm.hostname = "orange2.xtl"
+    
+    #     orange2.vm.provider "virtualbox" do |vb|
+    #         vb.name = "orange2.xtl"
+    #         vb.cpus = 1
+    #         vb.memory = "512"
+    #     end
+    # end
+    
+    # Chạy file install-docker-kube.sh sau khi nạp Box
+    # config.vm.provision "shell", path: "./../install-docker-kube.sh"
+  
+  # Chạy các lệnh shell
+    config.vm.provision "shell", inline: <<-SHELL
+    # Đặt pass 123 có tài khoản root và cho phép SSH
+    echo "123" | passwd --stdin root
+    sed -i 's/^PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+    systemctl reload sshd
+# Ghi nội dung sau ra file /etc/hosts để truy cập được các máy theo HOSTNAME
+cat >>/etc/hosts<<EOF
+192.168.56.10 blue1.xtl
+192.168.56.11 blue2.xtl
+192.168.56.12 green1.xtl
+192.168.56.13 green2.xtl
+192.168.56.14 orange1.xtl
+192.168.56.15 orange2.xtl
+EOF
+
+  SHELL
+end
