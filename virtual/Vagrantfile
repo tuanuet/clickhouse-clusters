@@ -27,31 +27,31 @@ Vagrant.configure("2") do |config|
         end
     end
 
-    config.vm.define "orange1" do |orange1|
-        orange1.vm.box = "centos/7"
-        orange1.vm.network "private_network", ip: "192.168.56.14"
-        orange1.vm.hostname = "orange1.xtl"
+    # config.vm.define "orange1" do |orange1|
+    #     orange1.vm.box = "centos/7"
+    #     orange1.vm.network "private_network", ip: "192.168.56.14"
+    #     orange1.vm.hostname = "orange1.xtl"
     
-        orange1.vm.provider "virtualbox" do |vb|
-            vb.name = "orange1.xtl"
-            vb.cpus = 1
-            vb.memory = "512"
-        end
-    end
+    #     orange1.vm.provider "virtualbox" do |vb|
+    #         vb.name = "orange1.xtl"
+    #         vb.cpus = 1
+    #         vb.memory = "512"
+    #     end
+    # end
 
 
-    ## replicas
-    config.vm.define "blue2" do |blue2|
-        blue2.vm.box = "centos/7"
-        blue2.vm.network "private_network", ip: "192.168.56.11"
-        blue2.vm.hostname = "blue2.xtl"
+    # ## replicas
+    # config.vm.define "blue2" do |blue2|
+    #     blue2.vm.box = "centos/7"
+    #     blue2.vm.network "private_network", ip: "192.168.56.11"
+    #     blue2.vm.hostname = "blue2.xtl"
     
-        blue2.vm.provider "virtualbox" do |vb|
-            vb.name = "blue2.xtl"
-            vb.cpus = 1
-            vb.memory = "512"
-        end
-    end
+    #     blue2.vm.provider "virtualbox" do |vb|
+    #         vb.name = "blue2.xtl"
+    #         vb.cpus = 1
+    #         vb.memory = "512"
+    #     end
+    # end
 
     # config.vm.define "green2" do |green2|
     #     green2.vm.box = "centos/7"
